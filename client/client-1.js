@@ -6,23 +6,29 @@ io.on('connect', () => {
   console.log('connected!')
 
   io.send('asdsadssa');
-  io.emit('asd', { a: 123 })
+  io.emit('asd', { a: 123 });
 });
 
-io.on('message', (data) => console.log('msg is', data))
+io.on('message', (data) => console.log('msg is', data));
 
 console.log('start client');
 
 app.use(bodyParser.json());
 
-app.use('/send-msg', (req, res) => {
-  const { event, room } = req.body;
+app
+  .use('/send-msg', (req, res) => {
+    const { event, room } = req.body;
 
-  io.emit(event, room);
+    io.emit(event, room);
 
-  io.to()
-
-  res.json({ message: 'msg has been sent' });
-});
+    res.json({ message: 'msg has been sent' });
+  })
+  .use('/send-private', (req, res) => {
+    io.emit('send-to-room', {
+      room: 'private-room',
+      msg: 'bla bla'
+    });
+    res.json({ message: 'bla has been sent' });
+  });
 
 app.listen(3002);
