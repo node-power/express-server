@@ -36,6 +36,6 @@ module.exports.authCheck = (req, res, next) => {
 
     req.user = user;
 
-
+    next();
   })
 };

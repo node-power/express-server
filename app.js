@@ -8,7 +8,11 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const setupDB = require('./helpers/setupDB');
-const { toDosRoutes } = require('./routes');
+const {
+  toDosRoutes,
+  authRoutes,
+  orderRoutes
+} = require('./routes');
 const ioSetup = require('./socket');
 
 ioSetup.call(io);
@@ -18,7 +22,9 @@ app
   .use(morgan('dev'))
   .use(bodyParser.urlencoded({ extended: false }))
   .use(bodyParser.json())
+  .use('/auth', authRoutes)
   .use('/to-dos', toDosRoutes)
+  .use('/orders', orderRoutes)
   .use((err, req, res, next) => {
     res.status(500).json({ e: err.stack });
   });
