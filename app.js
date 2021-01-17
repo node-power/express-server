@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 const bodyParser = require('body-parser');
@@ -19,6 +20,7 @@ ioSetup.call(io);
 setupDB();
 
 app
+  .use(cors())
   .use(morgan('dev'))
   .use(bodyParser.urlencoded({ extended: false }))
   .use(bodyParser.json())
